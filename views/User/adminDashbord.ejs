@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel - Attendance System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-zinc-800 text-white flex flex-col min-h-screen">
+    <!-- Navbar -->
+    <header>
+      <nav class="bg-black p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+          <a href="/" class="text-white text-lg font-semibold"
+            >Attendance System</a
+          >
+          <div class="space-x-4">
+            <a href="/" class="text-gray-300 hover:text-white hover:underline"
+              >Home</a
+            >
+            <a
+              href="/logout"
+              class="text-gray-300 hover:text-white hover:underline"
+              >Logout</a
+            >
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6 flex-grow">
+      <section class="bg-zinc-700 p-6 rounded-lg shadow-md">
+        <h1 class="text-3xl font-bold text-white">Admin Dashboard</h1>
+        <p class="text-gray-300">Manage attendance, reports, and user data.</p>
+      </section>
+
+      <!-- Dashboard Options -->
+      <section
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6"
+      >
+        <!-- View Attendance Records -->
+        <a
+          href="/admin/attendance"
+          class="block text-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 shadow-md"
+        >
+          View Attendance Records
+        </a>
+
+        <!-- Edit/Add/Delete Attendance -->
+        <a
+          href="/admin/attendance/manage"
+          class="block text-center px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 shadow-md"
+        >
+          Manage Attendance
+        </a>
+
+        <!-- Generate User Reports -->
+        <a
+          href="/admin/reports"
+          class="block text-center px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 shadow-md"
+        >
+          Generate Reports
+        </a>
+
+        <!-- Leave Approvals -->
+        <a
+          href="/admin/leaves"
+          class="block text-center px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 shadow-md"
+        >
+          Leave Approvals
+        </a>
+
+        <!-- Grade Management -->
+        <a
+          href="/admin/grades"
+          class="block text-center px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 shadow-md"
+        >
+          Grade Management
+        </a>
+
+        <!-- System Reports -->
+        <a
+          href="/admin/system-reports"
+          class="block text-center px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 shadow-md"
+        >
+          System Reports
+        </a>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black text-gray-300 p-4 text-center mt-auto">
+      &copy; <%= new Date().getFullYear() %> Attendance System. All Rights
+      Reserved.
+    </footer>
+  </body>
+</html>

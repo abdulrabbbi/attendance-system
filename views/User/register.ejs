@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Form</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-black text-white min-h-screen flex justify-center items-center">
+  <div class="w-full max-w-md p-6 bg-gray-800 rounded shadow-lg">
+    <h1 class="text-2xl font-bold mb-6 text-center">Register Form</h1>
+    <form action="/register" method="POST" class="space-y-4">
+      
+      <!-- Name -->
+      <div>
+        <label for="name" class="block text-sm font-medium">Name</label>
+        <input 
+          type="text" 
+          id="name" 
+          name="name" 
+          required 
+          class="w-full px-4 py-2 mt-1 bg-gray-900 text-white border border-gray-700 rounded shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label for="email" class="block text-sm font-medium">Email</label>
+        <input 
+          type="email" 
+          id="email" 
+          name="email" 
+          required 
+          class="w-full px-4 py-2 mt-1 bg-gray-900 text-white border border-gray-700 rounded shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+      </div>
+
+      <!-- Password -->
+      <div>
+        <label for="password" class="block text-sm font-medium">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          name="password" 
+          required 
+          class="w-full px-4 py-2 mt-1 bg-gray-900 text-white border border-gray-700 rounded shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+      </div>
+
+      <!-- Profile Picture -->
+      <div>
+        <label for="profilePicture" class="block text-sm font-medium">Profile Picture url</label>
+        <input 
+          type="text" 
+          id="profilePicture" 
+          name="profilePicture" 
+          class="w-full px-4 py-2 mt-1 bg-gray-900 text-white border border-gray-700 rounded shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+      </div>
+
+      <!-- Grade -->
+      <div>
+        <label for="grade" class="block text-sm font-medium">Grade</label>
+        <input 
+          type="number" 
+          id="grade" 
+          name="grade" 
+          min="0" 
+          max="100" 
+          class="w-full px-4 py-2 mt-1 bg-gray-900 text-white border border-gray-700 rounded shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+      </div>
+
+      <!-- Role -->
+      <div>
+        <label for="role" class="block text-sm font-medium">Role</label>
+        <select 
+          id="role" 
+          name="role" 
+          required
+          class="w-full px-4 py-2 mt-1 bg-gray-900 text-white border border-gray-700 rounded shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <option value="student">Student</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+
+      <!-- Submit Button -->
+      <div>
+        <button 
+          type="submit" 
+          class="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          Submit
+        </button>
+      </div>
+
+    </form>
+  </div>
+</body>
+</html>
