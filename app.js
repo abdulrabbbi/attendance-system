@@ -99,7 +99,7 @@ app.post(
       { profilePicture },
       { new: true }
     );
-    res.redirect("/");
+    res.redirect("/studentDashboard");
   })
 );
 // route middle ware for user
@@ -107,11 +107,15 @@ app.use("/", userRouter);
 
 app.use("/", loginRouter);
 
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Something went wrong!");
+});
 
-// // Handle 404 errors for undefined routes
-// app.all("*", (req, res, next) => {
-//   next(new expressError(404, "page not found!!")); // Custom error for undefined routes
-// });
+// Handle 404 errors for undefined routes
+app.all("*", (req, res, next) => {
+  next(new expressError(404, "page not found!!")); // Custom error for undefined routes
+});
 
 app.listen(3000, () => {
   console.log("your port is listing to http://localhost3000");
