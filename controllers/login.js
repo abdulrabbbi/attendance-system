@@ -16,7 +16,6 @@ module.exports.renderAdminDashbord = async (req, res) => {
 
 // render student dashbord
 module.exports.renderStuDashbord = async (req, res) => {
-  console.log("user dashbord");
   try {
     const user = await User.findById(req.user.id);
     if (!user) {

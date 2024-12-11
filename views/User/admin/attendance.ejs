@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Attendance System - Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="bg-zinc-800 text-white flex flex-col min-h-screen">
+    <!-- Success/Error Message Section -->
+    <% if (success && success.length) { %>
+    <div id="successMessage" class="bg-green-500 text-white p-4 rounded">
+      <%= success %>
+    </div>
+    <% } %> <% if (error && error.length) { %>
+    <div id="errorMessage" class="bg-red-500 text-white p-4 rounded">
+      <%= error %>
+    </div>
+    <% } %>
+
+    <header>
+      <nav class="bg-black p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+          <a href="/" class="text-white text-lg font-semibold">Attendance System</a>
+          <div class="space-x-4">
+            <a href="/" class="text-gray-300 hover:text-white hover:underline">Home</a>
+            <a href="/logout" class="text-gray-300 hover:text-white hover:underline">Logout</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container mx-auto p-6 flex-grow">
+      <!-- Admin Dashboard -->
+      <section class="bg-zinc-700 p-6 rounded-lg shadow-md">
+        <h1 class="text-3xl font-bold text-white">Student Attendance Records</h1>
+
+        <!-- Table to display attendance -->
+        <div class="overflow-x-auto mt-6">
+          <table class="min-w-full table-auto">
+            <thead class="bg-gray-900 text-white">
+              <tr>
+                <th class="px-4 py-2 border">Student Name</th>
+                <th class="px-4 py-2 border">Date</th>
+                <th class="px-4 py-2 border">Attendance Status</th>
+              </tr>
+            </thead>
+            <tbody class="bg-zinc-600">
+              <% if (attendanceRecords && attendanceRecords.length) { %>
+                <% for (let record of attendanceRecords) { %>
+                    <tr>
+                      <td class="px-4 py-2 border text-center"><%= record.userId.name %></td>
+                      <td class="px-4 py-2 border text-center"><%= new Date(record.date).toLocaleDateString() %></td>
+                      <td class="px-4 py-2 border text-center">
+                        <span class="px-2 py-1 rounded-full 
+                        <%= record.status === 'present' ? 'bg-green-500 text-white' : 'bg-red-500 text-white' %>">
+                          <%= record.status %>
+                        </span>
+                      </td>
+                    </tr>
+                  <% } %>
+                  
+              <% } else { %>
+                <tr>
+                  <td colspan="3" class="text-center px-4 py-2 text-gray-300">No attendance records found</td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <footer class="bg-black text-gray-300 p-4 text-center mt-auto">
+      &copy; <%= new Date().getFullYear() %> Attendance System. All Rights Reserved.
+    </footer>
+  </body>
+  <script src="/js/flash.js"></script>
+</html>

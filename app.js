@@ -6,13 +6,16 @@ const path = require("path");
 const expressError = require("./utils/expressError");
 const userRouter = require("./routes/user");
 const loginRouter = require("./routes/login");
+const leaveRequestRouter = require("./routes/studentRequest");
+const updatedProfilePicture = require("./routes/profile");
+const handleStudentAttendanceRouter = require("./routes/attendance");
 const MongoStore = require("connect-mongo"); // use for session storage in mongodb
 const session = require("express-session"); // used to store data of client show on sever side
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const flash = require("connect-flash");
 const User = require("./models/user");
-const wrapasync = require("./utils/wrapasync");
+const Attendance = require("./models/Attendance");
 
 async function main() {
   await mongoose.connect("mongodb://127.0.0.1:27017/AttendanceSystem");
@@ -87,29 +90,39 @@ app.use((req, res, next) => {
   next();
 });
 
-
-app.post(
-  "/edits/:id",
-  wrapasync(async (req, res) => {
-    let { id } = req.params;
-    let { profilePicture } = req.body;
-    await User.findOneAndUpdate(
-      // save updated user in to database
-      { _id: id },
-      { profilePicture },
-      { new: true }
-    );
-    res.redirect("/studentDashboard");
-  })
-);
 // route middle ware for user
-app.use("/", userRouter);
+app.use("/", userRouter); // register the user ( admin , student)
 
-app.use("/", loginRouter);
+app.use("/", loginRouter); // handle the login router
+app.use("/", leaveRequestRouter); // handle the student leave request
+app.use("/", updatedProfilePicture); // handle the update profile picture
+app.use("/", handleStudentAttendanceRouter); // handle student attendance marking
 
+// admindashbord attendance handling
+app.get("/admin/attendance", async (req, res) => {
+  try {
+    // Fetch attendance records from the database
+    const attendanceRecords = await Attendance.find().populate("userId");
+    console.log(attendanceRecords);
+
+    res.render("User/admin/attendance", {
+      attendanceRecords: attendanceRecords,
+    });
+  } catch (err) {
+    console.error(err);
+    req.flash("error", "An error occurred while fetching attendance records.");
+    res.redirect("/admin/dashboard");
+  }
+});
+
+// Error-handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something went wrong!");
+  if (!res.headersSent) {
+    // Check if headers are already sent
+    res.status(err.status || 500).render("error.ejs", { err });
+  } else {
+    console.error("Headers already sent. Cannot render error page.");
+  }
 });
 
 // Handle 404 errors for undefined routes

@@ -6,7 +6,18 @@
     <title>Attendance System - Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
+
   <body class="bg-zinc-800 text-white flex flex-col min-h-screen">
+    <% if (success && success.length) { %>
+    <div id="successMessage" class="bg-green-500 text-white p-4 rounded">
+      <%= success %>
+    </div>
+    <% } %> <% if (error && error.length) { %>
+    <div id="errorMessage" class="bg-red-500 text-white p-4 rounded">
+      <%= error %>
+    </div>
+    <% } %>
+
     <header>
       <nav class="bg-black p-4 shadow-md">
         <div class="container mx-auto flex justify-between items-center">
@@ -29,7 +40,7 @@
     <main class="container mx-auto p-6 flex-grow">
       <!-- Welcome Section -->
       <section class="bg-zinc-700 p-6 rounded-lg shadow-md">
-        <div class="flex justify-between items-center">
+        <div class="flex justify-between items-center flex-wrap">
           <div>
             <h1 class="text-3xl font-bold text-white">
               Welcome, <%= user.name %>!
@@ -39,54 +50,66 @@
           <img
             src="<%= user.profilePicture %>"
             alt="Profile Picture"
-            class="rounded-full w-20 h-20"
+            class="rounded-full w-20 h-20 mt-4 sm:mt-0"
           />
         </div>
       </section>
 
       <!-- Dashboard Options -->
-      <section
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-6"
-      >
+      <section class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
         <!-- Mark Attendance -->
-        <% if (!user.hasMarkedAttendanceToday) { %>
-        <a
-          href="/attendance/mark"
-          class="block text-center px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 shadow-md"
-        >
-          Mark Attendance
-        </a>
-        <% } else { %>
-        <p
-          class="block text-center px-4 py-2 bg-gray-500 text-gray-300 rounded shadow-md"
-        >
-          Attendance Marked Today
-        </p>
-        <% } %>
+        <div class="bg-zinc-700 p-4 rounded-lg shadow-md">
+          <h2 class="text-2xl font-semibold text-white">Mark Attendance</h2>
+          <form action="/attendance/mark" method="POST" class="mt-4">
+            <button
+              type="submit"
+              class="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 shadow-md"
+            >
+              Mark Attendance
+            </button>
+          </form>
+        </div>
 
         <!-- Request Leave -->
-        <a
-          href="/leave/request"
-          class="block text-center px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 shadow-md"
-        >
-          Mark Leave
-        </a>
-
-        <!-- View Attendance -->
-        <a
-          href="/attendance/view"
-          class="block text-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 shadow-md"
-        >
-          View Attendance
-        </a>
+        <div class="bg-zinc-700 p-4 rounded-lg shadow-md">
+          <h2 class="text-2xl font-semibold text-white">Request Leave</h2>
+          <form action="/leave/request" method="POST" class="mt-4">
+            <label for="leaveDates" class="block text-gray-300"
+              >Leave Dates:</label
+            >
+            <input
+              type="text"
+              id="leaveDates"
+              name="date"
+              placeholder="YYYY-MM-DD, YYYY-MM-DD"
+              required
+              class="block w-full p-2 border rounded mt-1 bg-zinc-600 text-gray-300"
+            />
+            <label for="leaveReason" class="block text-gray-300 mt-4"
+              >Reason for Leave:</label
+            >
+            <textarea
+              id="leaveReason"
+              name="reason"
+              required
+              class="block w-full p-2 border rounded mt-1 bg-zinc-600 text-gray-300"
+            ></textarea>
+            <button
+              type="submit"
+              class="mt-4 px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 shadow-md"
+            >
+              Submit Leave Request
+            </button>
+          </form>
+        </div>
       </section>
 
       <!-- Edit Profile Picture -->
       <section class="bg-zinc-700 p-6 mt-8 rounded-lg shadow-md">
         <h2 class="text-2xl font-semibold text-white">Edit Profile Picture</h2>
-        <form action="/edits/<%= user.id  %>" method="POST" class="mt-4">
+        <form action="/edits/<%= user.id %>" method="POST" class="mt-4">
           <label for="profilePicture" class="block text-gray-300"
-            >Upload Picture url:</label
+            >Upload Picture URL:</label
           >
           <input
             type="text"
@@ -104,9 +127,11 @@
         </form>
       </section>
     </main>
+
     <footer class="bg-black text-gray-300 p-4 text-center mt-auto">
       &copy; <%= new Date().getFullYear() %> Attendance System. All Rights
       Reserved.
     </footer>
   </body>
+  <script src="/js/flash.js"></script>
 </html>
