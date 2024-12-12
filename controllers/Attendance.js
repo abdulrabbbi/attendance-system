@@ -1,17 +1,19 @@
 const Attendance = require("../models/Attendance");
 
-
 module.exports.handleStudentAttendance = async (req, res) => {
   const userid = req.user.id; // Assuming `req.user` contains authenticated user info
   try {
-    const today = new Date().toISOString().split("T")[0]; // Get today's date (YYYY-MM-DD)
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0); // Start of the current day
+
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999); // End of the current day
+
     const attendanceExists = await Attendance.findOne({
       userId: userid,
-      date: {
-        $gte: new Date(today).setHours(0, 0, 0, 0),
-        $lt: new Date(today).setHours(23, 59, 59, 999),
-      },
+      date: { $gte: startOfDay, $lt: endOfDay },
     });
+
     if (attendanceExists) {
       req.flash("error", "You have already marked attendance today.");
       return res.redirect("/studentDashboard");
@@ -30,6 +32,6 @@ module.exports.handleStudentAttendance = async (req, res) => {
   } catch (err) {
     console.error(err);
     req.flash("error", "An error occurred while marking attendance.");
-    res.render("error.ejs");
+    res.status(500).render("error", { err: "An error occurred while marking attendance" });
   }
 };

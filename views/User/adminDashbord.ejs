@@ -30,9 +30,22 @@
 
     <!-- Main Content -->
     <main class="container mx-auto p-6 flex-grow">
+      <!-- Admin Info -->
       <section class="bg-zinc-700 p-6 rounded-lg shadow-md">
         <h1 class="text-3xl font-bold text-white">Admin Dashboard</h1>
         <p class="text-gray-300">Manage attendance, reports, and user data.</p>
+        <div class="mt-4 flex items-center space-x-4">
+          <img
+            src="<%= user.profilePicture %>"
+            alt="Admin Profile"
+            class="w-16 h-16 rounded-full border-2 border-gray-300"
+          />
+          <div>
+            <h2 class="text-lg font-semibold text-white"><%= user.name %></h2>
+            <p class="text-gray-400">Email: <%= user.email %></p>
+            <p class="text-gray-400">Role: <%= user.role %></p>
+          </div>
+        </div>
       </section>
 
       <!-- Dashboard Options -->
@@ -46,29 +59,13 @@
         >
           View Attendance Records
         </a>
+
+        <!-- View All User Data -->
         <a
           href="/users"
-          class="block text-center px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 shadow-md"
-        >
-          
-        view all user data
-        </a>
-
-
-        <!-- Edit/Add/Delete Attendance -->
-        <a
-          href="/admin/attendance/manage"
           class="block text-center px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 shadow-md"
         >
-          Manage Attendance
-        </a>
-
-        <!-- Generate User Reports -->
-        <a
-          href="/admin/reports"
-          class="block text-center px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 shadow-md"
-        >
-          Generate Reports
+          View All User Data
         </a>
 
         <!-- Leave Approvals -->
@@ -77,22 +74,6 @@
           class="block text-center px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600 shadow-md"
         >
           Leave Approvals
-        </a>
-
-        <!-- Grade Management -->
-        <a
-          href="/admin/grades"
-          class="block text-center px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 shadow-md"
-        >
-          Grade Management
-        </a>
-
-        <!-- System Reports -->
-        <a
-          href="/admin/system-reports"
-          class="block text-center px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 shadow-md"
-        >
-          System Reports
         </a>
       </section>
     </main>

@@ -9,13 +9,15 @@ const loginRouter = require("./routes/login");
 const leaveRequestRouter = require("./routes/studentRequest");
 const updatedProfilePicture = require("./routes/profile");
 const handleStudentAttendanceRouter = require("./routes/attendance");
+const handleLeaveRequestAdmin = require("./routes/admin/leaveRequest");
+const viewAttendanceData = require("./routes/admin/attendance");
 const MongoStore = require("connect-mongo"); // use for session storage in mongodb
 const session = require("express-session"); // used to store data of client show on sever side
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const flash = require("connect-flash");
 const User = require("./models/user");
-const Attendance = require("./models/Attendance");
+const { handleLeaveRequest } = require("./controllers/StuRequest");
 
 async function main() {
   await mongoose.connect("mongodb://127.0.0.1:27017/AttendanceSystem");
@@ -97,23 +99,8 @@ app.use("/", loginRouter); // handle the login router
 app.use("/", leaveRequestRouter); // handle the student leave request
 app.use("/", updatedProfilePicture); // handle the update profile picture
 app.use("/", handleStudentAttendanceRouter); // handle student attendance marking
-
-// admindashbord attendance handling
-app.get("/admin/attendance", async (req, res) => {
-  try {
-    // Fetch attendance records from the database
-    const attendanceRecords = await Attendance.find().populate("userId");
-    console.log(attendanceRecords);
-
-    res.render("User/admin/attendance", {
-      attendanceRecords: attendanceRecords,
-    });
-  } catch (err) {
-    console.error(err);
-    req.flash("error", "An error occurred while fetching attendance records.");
-    res.redirect("/admin/dashboard");
-  }
-});
+app.use("/admin", viewAttendanceData); // show the attendance detail on admin page
+app.use("/admin/leaves", handleLeaveRequestAdmin) // handle the leave request by admin
 
 // Error-handling middleware
 app.use((err, req, res, next) => {
@@ -127,7 +114,7 @@ app.use((err, req, res, next) => {
 
 // Handle 404 errors for undefined routes
 app.all("*", (req, res, next) => {
-  next(new expressError(404, "page not found!!")); // Custom error for undefined routes
+  res.status(404).render("error", { err: "Page Not Found!" });
 });
 
 app.listen(3000, () => {

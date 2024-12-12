@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leave Requests - Attendance System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-zinc-800 text-white flex flex-col min-h-screen">
+    <!-- Success/Error Message Section -->
+    <% if (success && success.length) { %>
+    <div id="successMessage" class="bg-green-500 text-white p-4 rounded">
+      <%= success %>
+    </div>
+    <% } %> <% if (error && error.length) { %>
+    <div id="errorMessage" class="bg-red-500 text-white p-4 rounded">
+      <%= error %>
+    </div>
+    <% } %>
+    <!-- Navbar -->
+    <header>
+      <nav class="bg-black p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+          <a href="/" class="text-white text-lg font-semibold"
+            >Attendance System</a
+          >
+          <div class="space-x-4">
+            <a href="/" class="text-gray-300 hover:text-white hover:underline"
+              >Home</a
+            >
+            <a
+              href="/logout"
+              class="text-gray-300 hover:text-white hover:underline"
+              >Logout</a
+            >
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6 flex-grow">
+      <section class="bg-zinc-700 p-6 rounded-lg shadow-md">
+        <a
+          href="/adminDashbord"
+          class="px-4 py-2 text-red-500 font-bold hover:text-red-700"
+          >back to page</a
+        >
+        <h1 class="text-3xl font-bold text-white">Leave Requests</h1>
+        <p class="text-gray-300">
+          Review and manage leave requests from users.
+        </p>
+
+        <div class="mt-6">
+          <table class="table-auto w-full text-left text-gray-300">
+            <thead>
+              <tr>
+                <th class="border-b py-2">User ID</th>
+                <th class="border-b py-2">Names</th>
+                <th class="border-b py-2">Dates</th>
+                <th class="border-b py-2">Reason</th>
+                <th class="border-b py-2">Status</th>
+                <th class="border-b py-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% leaveRequests.forEach((request) => { %>
+              <tr>
+                <td class="border-b py-2"><%= request.userId.id %></td>
+                <td class="border-b py-2"><%= request.userId.name %></td>
+                <td class="border-b py-2">
+                  <%= request.date.map(date => new
+                  Date(date).toLocaleDateString()).join(' - ') %>
+                </td>
+                <td class="border-b py-2"><%= request.reason %></td>
+                <td class="border-b py-2 capitalize"><%= request.status %></td>
+                <td class="border-b py-2 capitalize">
+                  <!-- Approve Form -->
+                  <form
+                    action="/admin/leaves/<%= request._id %>/approve"
+                    method="POST"
+                    class="inline"
+                  >
+                    <button
+                      type="submit"
+                      class="ml-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700"
+                    >
+                      Approve
+                    </button>
+                  </form>
+
+                  <!-- Reject Form -->
+                  <form
+                    action="/admin/leaves/<%= request._id %>/reject"
+                    method="POST"
+                    class="inline"
+                  >
+                    <button
+                      type="submit"
+                      class="ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700"
+                    >
+                      Reject
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black text-gray-300 p-4 text-center mt-auto">
+      &copy; <%= new Date().getFullYear() %> Attendance System. All Rights
+      Reserved.
+    </footer>
+  </body>
+  <script src="/js/flash.js"></script>
+</html>

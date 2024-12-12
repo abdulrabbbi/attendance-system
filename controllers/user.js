@@ -22,8 +22,8 @@ module.exports.uploadFormData = async (req, res, next) => {
     const user = await User.register(newUser, password);
 
     // Log the new user details
-    if(user.role == "admin"){
-      res.render("User/adminDashbord.ejs");
+    if (user.role == "admin") {
+      res.render("User/adminDashbord.ejs", { user });
     }
 
     // Use `req.login` to log the user in
@@ -37,7 +37,6 @@ module.exports.uploadFormData = async (req, res, next) => {
     res.redirect("/register"); // Redirect back to the signup form
   }
 };
-
 
 module.exports.renderIndex = async (req, res) => {
   let users = await User.find();

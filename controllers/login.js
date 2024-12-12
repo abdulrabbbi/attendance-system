@@ -5,12 +5,16 @@ module.exports.renderAdminDashbord = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     if (!user) {
-      return res.status(404).send("User not found");
+      return res.status(404).render("error", { err: "user not found" });
     }
-    res.render("User/adminDashbord", { user });
+    if (user.role === "admin") {
+      return res.render("User/adminDashbord", { user });
+    } else {
+      res.redirect("/login");
+    } 
   } catch (error) {
     console.error(error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).render("error", { err: "Internal Server Error" });
   }
 };
 
@@ -19,12 +23,17 @@ module.exports.renderStuDashbord = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     if (!user) {
-      return res.status(404).send("User not found");
+      return res.status(404).render("error", { err : "user not found" });
+    }
+    if (user.role === "student") {
+      return res.render("User/dashbord", { user });
+    } else {
+      res.redirect("/login");
     }
     res.render("User/dashbord", { user });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).render("error", { err : "Internal Server Error" });
   }
 };
 
