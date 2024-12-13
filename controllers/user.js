@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const StuRequest = require("../models/StuRequest");
 
 module.exports.RenderForm = (req, res) => {
   res.render("User/register.ejs");
@@ -21,22 +22,27 @@ module.exports.uploadFormData = async (req, res, next) => {
     // Register the user with a hashed password
     const user = await User.register(newUser, password);
 
-    // Log the new user details
-    if (user.role == "admin") {
-      res.render("User/adminDashbord.ejs", { user });
-    }
-
     // Use `req.login` to log the user in
     const login = promisify(req.login.bind(req)); // Convert req.login to promise
     await login(user);
 
+    // Handle the admin dashboard
+    if (user.role === "admin") {
+      return res.render("User/adminDashbord.ejs", { user });
+    }
+
+    // Fetch leave data for the user
+    let leaveData = await StuRequest.findOne({ userId: user._id });
+
     // Render the dashboard for the logged-in user
-    res.render("User/dashbord.ejs", { user });
+    return res.render("User/dashbord.ejs", { user, leave: leaveData });
   } catch (err) {
+    console.error(err); // Log the error for debugging
     req.flash("error", err.message); // Flash error message
-    res.redirect("/register"); // Redirect back to the signup form
+    return res.redirect("/register"); // Redirect back to the signup form
   }
 };
+
 
 module.exports.renderIndex = async (req, res) => {
   let users = await User.find();

@@ -11,13 +11,13 @@ const updatedProfilePicture = require("./routes/profile");
 const handleStudentAttendanceRouter = require("./routes/attendance");
 const handleLeaveRequestAdmin = require("./routes/admin/leaveRequest");
 const viewAttendanceData = require("./routes/admin/attendance");
+const handleGradeManagment = require("./routes/admin/adminGrades");
 const MongoStore = require("connect-mongo"); // use for session storage in mongodb
 const session = require("express-session"); // used to store data of client show on sever side
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const flash = require("connect-flash");
 const User = require("./models/user");
-const { handleLeaveRequest } = require("./controllers/StuRequest");
 
 async function main() {
   await mongoose.connect("mongodb://127.0.0.1:27017/AttendanceSystem");
@@ -100,22 +100,24 @@ app.use("/", leaveRequestRouter); // handle the student leave request
 app.use("/", updatedProfilePicture); // handle the update profile picture
 app.use("/", handleStudentAttendanceRouter); // handle student attendance marking
 app.use("/admin", viewAttendanceData); // show the attendance detail on admin page
-app.use("/admin/leaves", handleLeaveRequestAdmin) // handle the leave request by admin
+app.use("/admin/leaves", handleLeaveRequestAdmin); // handle the leave request by admin
+app.use("/admin", handleGradeManagment); // handle the grade mangment for admin of students
+// manage grades
 
-// Error-handling middleware
-app.use((err, req, res, next) => {
-  if (!res.headersSent) {
-    // Check if headers are already sent
-    res.status(err.status || 500).render("error.ejs", { err });
-  } else {
-    console.error("Headers already sent. Cannot render error page.");
-  }
-});
+// // Error-handling middleware
+// app.use((err, req, res, next) => {
+//   if (!res.headersSent) {
+//     // Check if headers are already sent
+//     res.status(err.status || 500).render("error.ejs", { err });
+//   } else {
+//     console.error("Headers already sent. Cannot render error page.");
+//   }
+// });
 
-// Handle 404 errors for undefined routes
-app.all("*", (req, res, next) => {
-  res.status(404).render("error", { err: "Page Not Found!" });
-});
+// // Handle 404 errors for undefined routes
+// app.all("*", (req, res, next) => {
+//   res.status(404).render("error", { err: "Page Not Found!" });
+// });
 
 app.listen(3000, () => {
   console.log("your port is listing to http://localhost3000");

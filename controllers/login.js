@@ -1,39 +1,40 @@
 const User = require("../models/user");
+const StuRequest = require("../models/StuRequest");
 
 //render the admin dashbord
 module.exports.renderAdminDashbord = async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id);
-    if (!user) {
-      return res.status(404).render("error", { err: "user not found" });
-    }
-    if (user.role === "admin") {
-      return res.render("User/adminDashbord", { user });
-    } else {
-      res.redirect("/login");
-    } 
-  } catch (error) {
-    console.error(error);
-    res.status(500).render("error", { err: "Internal Server Error" });
+  const user = await User.findById(req.user.id);
+  if (!user) {
+    return res.status(404).render("error", { err: "user not found" });
+  }
+  if (user.role === "admin") {
+    return res.render("User/adminDashbord", { user });
+  } else {
+    res.redirect("/login");
   }
 };
 
 // render student dashbord
 module.exports.renderStuDashbord = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id);
+    let userId = req.user.id; // userId is already a string
+    let leaveData = await StuRequest.findOne({ userId: userId }); // Fetch leave data
+    console.log("Leave Data:", leaveData); // Debug log
+    const user = await User.findById(userId); // Fetch user data
+
     if (!user) {
-      return res.status(404).render("error", { err : "user not found" });
+      return res.status(404).render("error", { err: "User not found" });
     }
+
     if (user.role === "student") {
-      return res.render("User/dashbord", { user });
+      // Pass both user and leave data to the dashboard
+      return res.render("User/dashbord", { user, leave: leaveData });
     } else {
-      res.redirect("/login");
+      return res.redirect("/login");
     }
-    res.render("User/dashbord", { user });
-  } catch (error) {
-    console.error(error);
-    res.status(500).render("error", { err : "Internal Server Error" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).render("error", { err: "An error occurred" });
   }
 };
 

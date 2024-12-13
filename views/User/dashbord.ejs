@@ -101,7 +101,16 @@
             >
               Submit Leave Request
             </button>
-            
+            <% if (leave) { %>
+            <span
+              class="<%= leave.status === 'approved' ? 'text-green-500' : leave.status === 'rejected' ? 'text-red-500' : 'text-yellow-500' %>"
+            >
+              <%= leave.status === 'approved' ? 'Requset Approved' : leave.status ===
+              'rejected' ? 'Request Rejected' : 'Request Pending' %>
+            </span>
+            <% } else { %>
+            <span class="text-gray-500">No leave Request here</span>
+            <% } %>
           </form>
         </div>
       </section>

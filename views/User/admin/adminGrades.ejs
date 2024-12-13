@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grade Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-900 text-gray-300 min-h-screen flex flex-col">
+    <!-- Header -->
+    <header>
+      <nav class="bg-black p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+          <a href="/" class="text-white text-lg font-semibold"
+            >Attendance System</a
+          >
+          <div class="space-x-4">
+            <a href="/" class="text-gray-300 hover:text-white hover:underline"
+              >Home</a
+            >
+            <a
+              href="/logout"
+              class="text-gray-300 hover:text-white hover:underline"
+              >Logout</a
+            >
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6 flex-grow">
+      <!-- Grade Management Section -->
+      <section class="mt-10 bg-zinc-700 p-6 rounded-lg shadow-md">
+        <a href="/adminDashbord" class="px-4 py-2 text-red-500  font-bold hover:text-red-700 ">back to page</a>
+        <h2 class="text-2xl font-bold mb-4">Grade Management</h2>
+        <p class="text-gray-300 mb-4">Attendance-based grades for users.</p>
+
+        <table
+          class="w-full text-left text-gray-300 border-collapse border border-zinc-600"
+        >
+          <thead class="bg-zinc-800">
+            <tr>
+              <th class="py-2 px-4 border border-zinc-600">Name</th>
+              <th class="py-2 px-4 border border-zinc-600">Email</th>
+              <th class="py-2 px-4 border border-zinc-600">Days Present</th>
+              <th class="py-2 px-4 border border-zinc-600">Grade</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% userGrades.forEach((user) => { %>
+            <tr class="even:bg-zinc-800 odd:bg-zinc-700">
+              <td class="py-2 px-4 border border-zinc-600"><%= user.name %></td>
+              <td class="py-2 px-4 border border-zinc-600">
+                <%= user.email %>
+              </td>
+              <td class="py-2 px-4 border border-zinc-600">
+                <%= user.attendanceCount %>
+              </td>
+              <td class="py-2 px-4 border border-zinc-600">
+                <%= user.grade %>
+              </td>
+            </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black text-gray-300 p-4 text-center">
+      &copy; <span id="year"></span> Attendance System. All Rights Reserved.
+    </footer>
+
+    <script>
+      // Set current year in footer
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
